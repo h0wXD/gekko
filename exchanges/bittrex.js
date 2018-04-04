@@ -3,7 +3,6 @@ var util = require('../core/util.js');
 var _ = require('lodash');
 var moment = require('moment');
 var log = require('../core/log');
-var apiKeyManager = require('../web/apiKeyManager.js');
 
 // Helper methods
 function joinCurrencies(currencyA, currencyB){
@@ -13,13 +12,7 @@ function joinCurrencies(currencyA, currencyB){
 var Trader = function(config) {
   _.bindAll(this);
 
-  // not nice but works to use a web module here to grab the keys
-  var keys = apiKeyManager._getApiKeyPair('bittrex');
-
-  if(_.isObject(keys)) {
-    config.key = keys.key;
-    config.secret = keys.secret;
-  } else {
+  if(!config.key) {
     // no api key defined -> we need to set a dummy key, otherwise the Bittrex module will not work even for public requests
     config.key = 'dummyApiKey';
     config.secret = 'dummyApiKey';
@@ -385,7 +378,7 @@ Trader.getCapabilities = function() {
       'VIRAL', 'VOX', 'VPN', 'VRC', 'VRM', 'VTC', 'VTR', 'WARP', 'WAVES', 'WBB',
       'WINGS', 'XAUR', 'XBB', 'XC', 'XCO', 'XCP', 'XDN', 'XDQ', 'XEL', 'XEM',
       'XLM', 'XMG', 'XMR', 'XPY', 'XQN', 'XRP', 'XSEED', 'XST', 'XTC', 'XVC',
-      'XVG', 'XWC', 'XZC', 'YBC', 'ZCL', 'ZEC', 'ZEN'
+      'XVG', 'XWC', 'XZC', 'YBC', 'ZCL', 'ZEC', 'ZEN','BTG','OMG','ADA'
     ],
     markets: [
 
@@ -656,6 +649,9 @@ Trader.getCapabilities = function() {
       { pair: ['USDT','XMR'], minimalOrder: { amount: 0.00000001, unit: 'asset' }},
       { pair: ['USDT','XRP'], minimalOrder: { amount: 0.00000001, unit: 'asset' }},
       { pair: ['USDT','ZEC'], minimalOrder: { amount: 0.00000001, unit: 'asset' }},
+      { pair: ['USDT','BTG'], minimalOrder: { amount: 0.00000001, unit: 'asset' }},
+      { pair: ['USDT','OMG'], minimalOrder: { amount: 0.00000001, unit: 'asset' }},
+      { pair: ['USDT','ADA'], minimalOrder: { amount: 0.00000001, unit: 'asset' }}
 
     ],
     requires: ['key', 'secret'],

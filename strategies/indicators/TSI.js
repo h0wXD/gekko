@@ -2,7 +2,8 @@
 var EMA = require('./EMA.js');
 
 var Indicator = function(settings) {
-  this.lastClose = 0;
+  this.input = 'candle';
+  this.lastClose = null;
   this.tsi = 0;
   this.inner = new EMA(settings.long);
   this.outer = new EMA(settings.short);
@@ -13,6 +14,14 @@ var Indicator = function(settings) {
 Indicator.prototype.update = function(candle) {
   var close = candle.close;
   var prevClose = this.lastClose;
+  
+  if (prevClose === null) {
+    // Set initial price to prevent invalid change calculation
+    this.lastClose = close;
+    // Do not calculate TSI on first close
+    return;
+  }
+  
   var momentum = close - prevClose;
 
   this.inner.update(momentum);

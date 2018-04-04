@@ -2,6 +2,7 @@
 var SMMA = require('./SMMA.js');
 
 var Indicator = function (settings) {
+  this.input = 'candle';
   this.lastClose = null;
   this.weight = settings.interval;
   this.avgU = new SMMA(this.weight);
@@ -9,7 +10,7 @@ var Indicator = function (settings) {
   this.u = 0;
   this.d = 0;
   this.rs = 0;
-  this.rsi = 0;
+  this.result = 0;
   this.age = 0;
 }
 
@@ -37,12 +38,12 @@ Indicator.prototype.update = function (candle) {
   this.avgD.update(this.d);
 
   this.rs = this.avgU.result / this.avgD.result;
-  this.rsi = 100 - (100 / (1 + this.rs));
+  this.result = 100 - (100 / (1 + this.rs));
 
   if (this.avgD.result === 0 && this.avgU.result !== 0) {
-    this.rsi = 100;
+    this.result = 100;
   } else if (this.avgD.result === 0) {
-    this.rsi = 0;
+    this.result = 0;
   }
 
   this.lastClose = currentClose;

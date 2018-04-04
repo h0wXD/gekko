@@ -1,9 +1,10 @@
 /*
- * Lineair regression curve
+ * Linear regression curve
  */
 var log = require('../../core/log');
 
 var Indicator = function(settings) {
+  this.input = 'price';
   this.depth = settings;
   this.result = false;
   this.age = 0;

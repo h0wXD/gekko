@@ -29,9 +29,9 @@ method.log = function() {
   var dema = this.indicators.dema;
 
   log.debug('calculated DEMA properties for candle:');
-  log.debug('\t', 'long ema:', dema.long.result.toFixed(8));
-  log.debug('\t', 'short ema:', dema.short.result.toFixed(8));
-  log.debug('\t diff:', dema.result.toFixed(5));
+  log.debug('\t', 'long ema:', dema.long.result ? dema.long.result.toFixed(8) : 'none');
+  log.debug('\t', 'short ema:', dema.short.result ? dema.short.result.toFixed(8) : 'none');
+  log.debug('\t diff:', dema.result ? dema.result.toFixed(5) : 'none');
   log.debug('\t DEMA age:', dema.short.age, 'candles');
 }
 
@@ -39,6 +39,10 @@ method.check = function(candle) {
   var dema = this.indicators.dema;
   var diff = dema.result;
   var price = candle.close;
+  
+  if (!diff) {
+    return;
+  }
 
   var message = '@ ' + price.toFixed(8) + ' (' + diff.toFixed(5) + ')';
 
