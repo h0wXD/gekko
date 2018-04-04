@@ -2,6 +2,7 @@
 var EMA = require('./EMA.js');
 
 var Indicator = function(config) {
+  this.input = 'price';
   this.result = false;
   this.short = new EMA(config.short);
   this.long = new EMA(config.long);
@@ -10,19 +11,18 @@ var Indicator = function(config) {
 // add a price and calculate the EMAs and
 // the diff for that price
 Indicator.prototype.update = function(price) {
-  this.short.update(price);
-  this.long.update(price);
-  this.calculateEMAdiff();
+  var res1 = this.short.update(price);
+  var res2 = this.long.update(price);
+  
+  if (res1 && res2) {
+	this.calculateEMAdiff();
+  }
 }
 
 // @link https://github.com/virtimus/GoxTradingBot/blob/85a67d27b856949cf27440ae77a56d4a83e0bfbe/background.js#L145
 Indicator.prototype.calculateEMAdiff = function() {
   var shortEMA = this.short.result;
   var longEMA = this.long.result;
-
-  if (!shortEMA || !longEMA) {
-    return;
-  }
 
   this.result = 100 * (shortEMA - longEMA) / ((shortEMA + longEMA) / 2);
 }
