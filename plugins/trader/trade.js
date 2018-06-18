@@ -156,7 +156,7 @@ class Trade{
       // if order to small
       if (!order.amount || order.amount < minimum) {
         return log.warn(
-          'wanted to buy',
+          'wanted to sell',
           this.currency,
           'but the amount is too small ',
           '(' + parseFloat(amount).toFixed(8) + ' @',
@@ -307,9 +307,9 @@ class Trade{
 
   getMinimum(price) {
     if(this.minimalOrder.unit === 'currency')
-      return minimum = this.minimalOrder.amount / price;
+      return this.minimalOrder.amount / price;
     else
-      return minimum = this.minimalOrder.amount;
+      return this.minimalOrder.amount;
   }
 }
 
